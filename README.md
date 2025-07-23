@@ -51,6 +51,13 @@ ffmpeg -i path/to/output_video.mp4 -vf "fps=10,scale=640:-1:flags=lanczos" -t 8 
 - Do **not** include large video files or model weights in the repo.
 - For best results, use high-quality, fixed-angle match videos.
 
+## Possible Extensions
+- **Replay Detection:** Automatically detect broadcast replays (using template matching, OCR, or logo detection) and exclude them from rally/hit analysis for more accurate stats.
+- **Player Movement Heatmaps:** Visualize player movement and court coverage over the course of a match.
+- **Shot Type Classification:** Classify shots (smash, drop, clear, etc.) using action recognition models.
+- **Serve/Receive Detection:** Automatically identify serves and receives to segment rallies more precisely.
+- **Web App or GUI:** Build an interactive interface for uploading videos and viewing analysis results.
+- **Integration with LLMs:** Generate natural language summaries or commentary for each rally or match.
 ---
 
 **Author:** Sai Praveen Bhamidipati
