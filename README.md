@@ -53,4 +53,4 @@ ffmpeg -i path/to/output_video.mp4 -vf "fps=10,scale=640:-1:flags=lanczos" -t 8 
 
 ---
 
-**Author:** [spraveen7](https://github.com/spraveen7) 
+**Author:** Sai Praveen Bhamidipati
