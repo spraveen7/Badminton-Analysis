@@ -28,7 +28,7 @@ video_path = 'videos/your_video.mp4'
 ```
 Run the script:
 ```bash
-python yolo_video_hit_overlay_rallyend.py
+python3 yolo_video_hit_overlay_rallyend.py
 ```
 - The output video with overlays will be saved in `yolo_overlay_videos/new_outputs/`.
 - At the end of the video, a black screen with summary stats will be shown.
