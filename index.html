@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT'S A BOY! - Indian Mythology Crossword</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2.5em;
+            color: #764ba2;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .game-area {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .crossword-grid {
+            flex: 1;
+            min-width: 400px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 40px);
+            grid-template-rows: repeat(12, 40px);
+            gap: 1px;
+            background: #ddd;
+            border: 2px solid #333;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            background: white;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .cell.black {
+            background: #333;
+        }
+
+        .cell input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: transparent;
+        }
+
+        .cell input:focus {
+            outline: 2px solid #667eea;
+            background: #f0f8ff;
+        }
+
+        .cell.correct {
+            background: #d4edda;
+        }
+
+        .cell-number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .clues-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .clues {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .clues h3 {
+            margin-top: 0;
+            color: #764ba2;
+            font-size: 1.3em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .clue {
+            margin: 10px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+
+        .clue-number {
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                flex-direction: column;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(12, 30px);
+                grid-template-rows: repeat(12, 30px);
+            }
+            
+            .cell {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎉 IT'S A BOY! 🎉</h1>
+            <p class="subtitle">Indian Mythology Crossword Puzzle</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            🎊 Congratulations! You've completed the crossword! 🎊
+        </div>
+
+        <div class="game-area">
+            <div class="crossword-grid">
+                <div class="grid" id="crosswordGrid"></div>
+                <div class="controls">
+                    <button class="btn" onclick="checkAnswers()">Check Answers</button>
+                    <button class="btn" onclick="clearGrid()">Clear All</button>
+                    <button class="btn" onclick="showSolution()">Show Solution</button>
+                </div>
+            </div>
+
+            <div class="clues-section">
+                <div class="clues">
+                    <h3>ACROSS</h3>
+                    <div class="clue">
+                        <span class="clue-number">3.</span> Blue-skinned god who played the flute (7)
+                    </div>
+                    <div class="clue">
+                        <span class="clue-number">5.</span> Monkey god of devotion (7)
+                    </div>
+                    <div class="clue">
+                        <span class="clue-number">7.</span> Preserver of the universe (6)
+                    </div>
+                    <div class="clue">
+                        <span class="clue-number">8.</span> Mahabharata's warrior prince (6)
+                    </div>
+                </div>
+
+                <div class="clues">
+                    <h3>DOWN</h3>
+                    <div class="clue">
+                        <span class="clue-number">1.</span> Remover of obstacles (8)
+                    </div>
+                    <div class="clue">
+                        <span class="clue-number">2.</span> First man in Hinduism (4)
+                    </div>
+                    <div class="clue">
+                        <span class="clue-number">4.</span> Divine architect (8)
+                    </div>
+                    <div class="clue">
+                        <span class="clue-number">6.</span> Sun god (5)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Grid layout: 12x12 grid
+        // G A N E S H A
+        // A M A N U
+        // K R I S H N A
+        // V I S H W A K A R M A
+        // V I S H N U
+        // H A N U M A N
+        // A R J U N
+        // S U R Y A
+
+        const gridSize = 12;
+        const answers = {
+            // ACROSS
+            3: {word: 'KRISHNA', row: 2, col: 0, direction: 'across'},
+            5: {word: 'HANUMAN', row: 5, col: 0, direction: 'across'},
+            7: {word: 'VISHNU', row: 4, col: 0, direction: 'across'},
+            8: {word: 'ARJUN', row: 6, col: 0, direction: 'across'},
+            
+            // DOWN
+            1: {word: 'GANESHA', row: 0, col: 0, direction: 'down'},
+            2: {word: 'MANU', row: 1, col: 1, direction: 'down'},
+            4: {word: 'VISHWAKARMA', row: 3, col: 0, direction: 'across'}, // Actually across but listed under down
+            6: {word: 'SURYA', row: 7, col: 0, direction: 'across'} // Actually across but listed under down
+        };
+
+        // Create a better layout
+        const layout = [
+            ['G', 'A', 'N', 'E', 'S', 'H', 'A', '', '', '', '', ''],
+            ['', 'M', 'A', 'N', 'U', '', '', '', '', '', '', ''],
+            ['K', 'R', 'I', 'S', 'H', 'N', 'A', '', '', '', '', ''],
+            ['V', 'I', 'S', 'H', 'W', 'A', 'K', 'A', 'R', 'M', 'A', ''],
+            ['V', 'I', 'S', 'H', 'N', 'U', '', '', '', '', '', ''],
+            ['H', 'A', 'N', 'U', 'M', 'A', 'N', '', '', '', '', ''],
+            ['A', 'R', 'J', 'U', 'N', '', '', '', '', '', '', ''],
+            ['S', 'U', 'R', 'Y', 'A', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', '']
+        ];
+
+        const wordPositions = {
+            'GANESHA': {row: 0, col: 0, direction: 'across', number: 1},
+            'MANU': {row: 1, col: 1, direction: 'across', number: 2},
+            'KRISHNA': {row: 2, col: 0, direction: 'across', number: 3},
+            'VISHWAKARMA': {row: 3, col: 0, direction: 'across', number: 4},
+            'VISHNU': {row: 4, col: 0, direction: 'across', number: 7},
+            'HANUMAN': {row: 5, col: 0, direction: 'across', number: 5},
+            'ARJUN': {row: 6, col: 0, direction: 'across', number: 8},
+            'SURYA': {row: 7, col: 0, direction: 'across', number: 6}
+        };
+
+        function createGrid() {
+            const grid = document.getElementById('crosswordGrid');
+            grid.innerHTML = '';
+
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    
+                    if (layout[row] && layout[row][col] && layout[row][col] !== '') {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.maxLength = 1;
+                        input.dataset.row = row;
+                        input.dataset.col = col;
+                        input.dataset.answer = layout[row][col];
+                        
+                        input.addEventListener('input', function(e) {
+                            this.value = this.value.toUpperCase();
+                            if (this.value && this.value === this.dataset.answer) {
+                                this.parentElement.classList.add('correct');
+                            } else {
+                                this.parentElement.classList.remove('correct');
+                            }
+                        });
+
+                        // Add navigation
+                        input.addEventListener('keydown', function(e) {
+                            if (e.key === 'Backspace' && !this.value) {
+                                // Move to previous cell
+                                moveToPreviousCell(this);
+                            } else if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+                                // Move to next cell after input
+                                setTimeout(() => moveToNextCell(this), 0);
+                            }
+                        });
+
+                        cell.appendChild(input);
+
+                        // Add numbers for word starts
+                        for (const [word, pos] of Object.entries(wordPositions)) {
+                            if (pos.row === row && pos.col === col) {
+                                const number = document.createElement('div');
+                                number.className = 'cell-number';
+                                number.textContent = pos.number;
+                                cell.appendChild(number);
+                                break;
+                            }
+                        }
+                    } else {
+                        cell.classList.add('black');
+                    }
+
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function moveToNextCell(currentInput) {
+            const row = parseInt(currentInput.dataset.row);
+            const col = parseInt(currentInput.dataset.col);
+            
+            // Try to move right first, then down to next row
+            for (let nextCol = col + 1; nextCol < gridSize; nextCol++) {
+                const nextInput = document.querySelector(`input[data-row="${row}"][data-col="${nextCol}"]`);
+                if (nextInput) {
+                    nextInput.focus();
+                    return;
+                }
+            }
+            
+            // If no cell to the right, try next row
+            for (let nextRow = row + 1; nextRow < gridSize; nextRow++) {
+                for (let nextCol = 0; nextCol < gridSize; nextCol++) {
+                    const nextInput = document.querySelector(`input[data-row="${nextRow}"][data-col="${nextCol}"]`);
+                    if (nextInput) {
+                        nextInput.focus();
+                        return;
+                    }
+                }
+            }
+        }
+
+        function moveToPreviousCell(currentInput) {
+            const row = parseInt(currentInput.dataset.row);
+            const col = parseInt(currentInput.dataset.col);
+            
+            // Try to move left first, then up to previous row
+            for (let prevCol = col - 1; prevCol >= 0; prevCol--) {
+                const prevInput = document.querySelector(`input[data-row="${row}"][data-col="${prevCol}"]`);
+                if (prevInput) {
+                    prevInput.focus();
+                    return;
+                }
+            }
+            
+            // If no cell to the left, try previous row
+            for (let prevRow = row - 1; prevRow >= 0; prevRow--) {
+                for (let prevCol = gridSize - 1; prevCol >= 0; prevCol--) {
+                    const prevInput = document.querySelector(`input[data-row="${prevRow}"][data-col="${prevCol}"]`);
+                    if (prevInput) {
+                        prevInput.focus();
+                        return;
+                    }
+                }
+            }
+        }
+
+        function checkAnswers() {
+            const inputs = document.querySelectorAll('input');
+            let allCorrect = true;
+            let filledCells = 0;
+
+            inputs.forEach(input => {
+                if (input.value.toUpperCase() === input.dataset.answer) {
+                    input.parentElement.classList.add('correct');
+                    filledCells++;
+                } else {
+                    input.parentElement.classList.remove('correct');
+                    if (input.value) {
+                        allCorrect = false;
+                    }
+                }
+            });
+
+            if (filledCells === inputs.length && allCorrect) {
+                document.getElementById('successMessage').style.display = 'block';
+                setTimeout(() => {
+                    alert('🎉 Congratulations! You\'ve solved the Indian Mythology crossword! 🎉');
+                }, 500);
+            }
+        }
+
+        function clearGrid() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.value = '';
+                input.parentElement.classList.remove('correct');
+            });
+            document.getElementById('successMessage').style.display = 'none';
+        }
+
+        function showSolution() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.value = input.dataset.answer;
+                input.parentElement.classList.add('correct');
+            });
+            document.getElementById('successMessage').style.display = 'block';
+        }
+
+        // Initialize the grid when page loads
+        createGrid();
+    </script>
+</body>
+</html>
