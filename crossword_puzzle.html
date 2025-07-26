@@ -19,6 +19,33 @@
             color: #2c3e50;
         }
         
+        .baby-announcement {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .baby-announcement h1 {
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .baby-announcement .baby-icon {
+            font-size: 3em;
+            margin: 10px 0;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
         .puzzle-container {
             display: flex;
             gap: 30px;
@@ -137,8 +164,12 @@
 </head>
 <body>
     <div class="header">
-        <h1>IT'S A BOY!</h1>
-        <h2>Indian Mythology Crossword</h2>
+        <div class="baby-announcement">
+            <h1>🎉 IT'S A BOY! 🎉</h1>
+            <div class="baby-icon">👶</div>
+            <p style="font-size: 1.2em; margin: 10px 0;">Celebrating with an Indian Mythology Crossword!</p>
+        </div>
+        <h2 style="color: #0984e3; font-size: 1.5em;">Divine Names & Legends</h2>
     </div>
     
     <div class="puzzle-container">
@@ -148,6 +179,11 @@
         </div>
         
         <div class="clues">
+            <div style="background: linear-gradient(135deg, #ffecd2, #fcb69f); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                <h3 style="margin: 0; color: #d63031;">🍼 Welcome Baby Boy! 🍼</h3>
+                <p style="margin: 5px 0; font-style: italic;">May these divine names bless your journey!</p>
+            </div>
+            
             <h3>ACROSS</h3>
             <ul class="clue-list">
                 <li><strong>3.</strong> Blue-skinned god who played the flute (7)</li>
