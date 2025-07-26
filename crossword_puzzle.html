@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT'S A BOY! - Indian Mythology Crossword</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        .puzzle-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .crossword-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 30px);
+            grid-template-rows: repeat(10, 30px);
+            gap: 1px;
+            margin: 20px 0;
+        }
+        
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: white;
+        }
+        
+        .cell.black {
+            background-color: #333;
+            border: 1px solid #333;
+        }
+        
+        .cell input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: transparent;
+        }
+        
+        .cell input:focus {
+            outline: 2px solid #3498db;
+            background-color: #e8f4f8;
+        }
+        
+        .number {
+            position: absolute;
+            top: 1px;
+            left: 2px;
+            font-size: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .clues {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-width: 300px;
+        }
+        
+        .clues h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .clue-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .clue-list li {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #3498db;
+        }
+        
+        .check-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        .check-button:hover {
+            background: #2980b9;
+        }
+        
+        .correct {
+            background-color: #d5f4e6 !important;
+        }
+        
+        .incorrect {
+            background-color: #ffeaa7 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IT'S A BOY!</h1>
+        <h2>Indian Mythology Crossword</h2>
+    </div>
+    
+    <div class="puzzle-container">
+        <div class="grid-container">
+            <div class="crossword-grid" id="crosswordGrid"></div>
+            <button class="check-button" onclick="checkAnswers()">Check Answers</button>
+        </div>
+        
+        <div class="clues">
+            <h3>ACROSS</h3>
+            <ul class="clue-list">
+                <li><strong>3.</strong> Blue-skinned god who played the flute (7)</li>
+                <li><strong>5.</strong> Monkey god of devotion (7)</li>
+                <li><strong>7.</strong> Preserver of the universe (6)</li>
+                <li><strong>8.</strong> Mahabharata's warrior prince (6)</li>
+            </ul>
+            
+            <h3>DOWN</h3>
+            <ul class="clue-list">
+                <li><strong>1.</strong> Remover of obstacles (8)</li>
+                <li><strong>2.</strong> First man in Hinduism (4)</li>
+                <li><strong>4.</strong> Divine architect (8)</li>
+                <li><strong>6.</strong> Sun god (5)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Grid layout: 12x10
+        const grid = [
+            ['', '1G', '2M', '', '', '', '', '', '', '', '', ''],
+            ['', 'A', 'A', '', '', '', '', '', '', '', '', ''],
+            ['', 'N', 'N', '3K', 'R', 'I', 'S', 'H', 'N', 'A', '', ''],
+            ['', 'E', 'U', '', '', '', '', '', '', '', '', ''],
+            ['', 'S', '', '5H', 'A', 'N', 'U', 'M', 'A', 'N', '', ''],
+            ['', 'H', '', '', '', '', '', '', '', '', '', ''],
+            ['', 'A', '', '4V', 'I', 'S', 'H', 'W', 'A', 'K', 'A', 'R'],
+            ['7V', 'I', 'S', 'H', 'N', 'U', '', '', '', '', '', 'M'],
+            ['6S', 'U', 'R', 'Y', 'A', '', '', '', '', '', '', 'A'],
+            ['', '', '', '', '', '', '8A', 'R', 'J', 'U', 'N', '']
+        ];
+
+        const answers = {
+            '1': 'GANESHA',
+            '2': 'MANU',
+            '3': 'KRISHNA',
+            '4': 'VISHWAKARMA',
+            '5': 'HANUMAN',
+            '6': 'SURYA',
+            '7': 'VISHNU',
+            '8': 'ARJUN'
+        };
+
+        const wordPositions = {
+            '1': {start: [0, 1], direction: 'down', length: 7},
+            '2': {start: [0, 2], direction: 'down', length: 4},
+            '3': {start: [2, 3], direction: 'across', length: 7},
+            '4': {start: [6, 3], direction: 'across', length: 12},
+            '5': {start: [4, 3], direction: 'across', length: 7},
+            '6': {start: [8, 0], direction: 'across', length: 5},
+            '7': {start: [7, 0], direction: 'across', length: 6},
+            '8': {start: [9, 6], direction: 'across', length: 5}
+        };
+
+        function createGrid() {
+            const gridElement = document.getElementById('crosswordGrid');
+            
+            for (let row = 0; row < 10; row++) {
+                for (let col = 0; col < 12; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    
+                    const cellValue = grid[row][col];
+                    
+                    if (cellValue === '') {
+                        cell.classList.add('black');
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.maxLength = 1;
+                        input.dataset.row = row;
+                        input.dataset.col = col;
+                        
+                        // Add number if this is the start of a word
+                        const number = cellValue.match(/^\d+/);
+                        if (number) {
+                            const numberSpan = document.createElement('span');
+                            numberSpan.className = 'number';
+                            numberSpan.textContent = number[0];
+                            cell.appendChild(numberSpan);
+                        }
+                        
+                        cell.appendChild(input);
+                    }
+                    
+                    gridElement.appendChild(cell);
+                }
+            }
+        }
+
+        function checkAnswers() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.classList.remove('correct', 'incorrect');
+            });
+
+            Object.keys(wordPositions).forEach(wordNum => {
+                const word = answers[wordNum];
+                const pos = wordPositions[wordNum];
+                const startRow = pos.start[0];
+                const startCol = pos.start[1];
+                
+                let userWord = '';
+                for (let i = 0; i < word.length; i++) {
+                    let row, col;
+                    if (pos.direction === 'across') {
+                        row = startRow;
+                        col = startCol + i;
+                    } else {
+                        row = startRow + i;
+                        col = startCol;
+                    }
+                    
+                    const input = document.querySelector(`input[data-row="${row}"][data-col="${col}"]`);
+                    if (input) {
+                        userWord += input.value.toUpperCase();
+                    }
+                }
+                
+                const isCorrect = userWord === word;
+                for (let i = 0; i < word.length; i++) {
+                    let row, col;
+                    if (pos.direction === 'across') {
+                        row = startRow;
+                        col = startCol + i;
+                    } else {
+                        row = startRow + i;
+                        col = startCol;
+                    }
+                    
+                    const input = document.querySelector(`input[data-row="${row}"][data-col="${col}"]`);
+                    if (input) {
+                        input.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    }
+                }
+            });
+        }
+
+        // Initialize the grid when page loads
+        document.addEventListener('DOMContentLoaded', createGrid);
+    </script>
+</body>
+</html>
